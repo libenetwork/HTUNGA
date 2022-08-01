@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
+            https://cordova.apache.org/docs/en/latest/
+        Some notes:
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="white">
+
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <title>Unga</title>
+        <style>
+            /*Убрать полосу прокрутки у элемента*/
+            .element::-webkit-scrollbar {
+                width: 0;
+            }
+
+            /*Убрать полосу прокрутки для всей страницы*/
+            ::-webkit-scrollbar {
+                width: 0;
+            }
+        </style>
+        <link href="http://fonts.cdnfonts.com/css/bahnschrift" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+    <script>
+        //after window is loaded completely
+        window.onload = function(){
+            //hide the preloader
+            document.querySelector(".preloader").style.display = "none";
+        }
+    </script>
+
+        <div class="app">
+            <div class = "header" >
+            <div class="row"  style = "padding-top: 1.5em; margin-left: 1em; margin-right: 1em; margin-bottom:1em" >
+                <div class = "col s2" style="margin-left: 0em"><img width="100%" class = "center-align" src=" /img/search_black_24dp.svg"></></div>
+            <div class = "col s4 offset-s2"><img style="margin-top: 0em" width = "100%" class = "center-align" src = "/img/logo.svg" ></></div>
+        <div class = "col s2 offset-s2" ><img width="100%" class = "center-align" src=" /img/history_black_24dp.svg"></></div>
+        </div>
+</div>
+        <div class="navbar" style = "box-shadow: 0em -1em 5em 0em #00000005">
+
+            <!--<a href="#home" ><img ></a>
+            <a href="#news">News</a>
+            <a href="#contact">Contact</a>-->
+            <div class = "row" style="margin-bottom: 0.75em !important; margin-left: 1em;">
+                <div class = "col s3" style = "width: 20% !important;"> <a href="#home" ><img class = "" width = "60%" height = "60%" style = "margin-top: 1em" class = "center-align" src = "/img/homec.svg"></></a></div>
+                <div class = "col s3" style = "width: 20% !important;"> <a href="#home" ><img class = ""  width = "60%" height = "60%" style = "margin-top: 1em; align:center" class = "center-align" src = "/img/lates.svg"></></a></div>
+                <div class = "col s3" style = "width:20% !important;"> <a href="#home" ><img class = "" width = "60%" height = "60%" style = "margin-top: 1em; align:center" class = "center-align" src = "/img/message.svg"></></a></div>
+                <div class = "col s3" style = "width:20% !important;"> <a href="#home" ><img class = "" width = "60%" height = "60%" style = "margin-top: 1em; align:center" class = "center-align" src = "/img/activity.svg"></></a></div>
+                <div class = "col s3" style = "width:20% !important;"> <a href="#home" ><img class = "" width = "60%" height = "60%" style = "margin-top: 0.8em; align:center; border-radius: 100%;" class = "center-align" src = "/img/ava.png"></></a></div>
+            </div>
+        </div>
+
+<!--<div style = "margin-top: 2.7em;">f
+</div>      --></div>  <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+        <script>
+
+            $(function(){
+
+                var box = $('.tcel');
+                var boxWith = box.height() / 3;
+                var boxHeight = box.height() / 4;
+
+                $('.lab p').css('font-size',boxWith);
+                $('.lab p').css('padding-top',boxHeight);
+                $('.lbf p').css('font-size',boxWith);
+
+            });
+        </script>
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="/js/materialize.min.js"></script>
+        <style>
+            .navbar {
+                background-color: #FFFFFF;
+                overflow: hidden;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+            .header {
+                background-color: #FFFFFF;
+
+                position: fixed;
+
+                width: 100%;
+            }
+            .gallery {
+                padding: 1rem;
+                display: grid;
+                padding-bottom: 0 !important;
+                margin-bottom: 0 ;
+                grid-template-rows: 1fr;
+                grid-column-gap: 1rem;
+                grid-row-gap: 1rem;
+                overflow: scroll;
+                height: 28em;
+                scroll-snap-type: both mandatory;
+                scroll-padding: 1rem;
+            }
+
+            .active {
+                scroll-snap-type: unset;
+            }
+
+            li {
+                scroll-snap-align: center;
+                display: inline-block;
+                border-radius: 0px;
+                font-size: 0;
+            }
+
+        </style>
+        <script>const slider = document.querySelector('.gallery');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', e => {
+            isDown = true;
+            slider.classList.add('active');
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('mouseleave', _ => {
+            isDown = false;
+            slider.classList.remove('active');
+        });
+        slider.addEventListener('mouseup', _ => {
+            isDown = false;
+            slider.classList.remove('active');
+        });
+        slider.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const SCROLL_SPEED = 3;
+            const walk = (x - startX) * SCROLL_SPEED;
+            slider.scrollLeft = scrollLeft - walk;
+        });</script>
+        </div>
+        <script src="cordova.js"></script>
+
+
+
+
+    </body>
+</html>

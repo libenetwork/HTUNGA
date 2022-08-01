@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
+            https://cordova.apache.org/docs/en/latest/
+        Some notes:
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="white">
+        <script type="text/javascript" src="js/materialize.js"></script>
+        <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="js/anime.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap" rel="stylesheet">
+        <title>Unga</title>
+        <style>
+            /*Убрать полосу прокрутки у элемента*/
+            .element::-webkit-scrollbar {
+                width: 0;
+            }
+
+            /*Убрать полосу прокрутки для всей страницы*/
+            ::-webkit-scrollbar {
+                width: 0;
+            }
+        </style>
+        <link href="http://fonts.cdnfonts.com/css/Bahnschrift" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+    <script>
+        var hp = screen.height * 0.01;
+        if ( parseFloat(getComputedStyle(document.documentElement).fontSize) < 14.5)
+        document.querySelector(":root").style.fontSize = screen.width * 0.04 + 'px';
+        //after window is loaded completely
+        window.onload = function(){
+            //hide the preloader
+            document.querySelector(".preloader").style.display = "none";
+
+            /*document.querySelector('.searchfiltermapul').style.gridTemplateColumns = (document.querySelector('.f1').offsetWidth + 1) + 'px ' + (document.querySelector('.f2').offsetWidth + 1) + 'px';
+*/
+
+        }
+        M.AutoInit();
+
+
+
+    </script>
+        <div class="app" >
+            <div id = "getter" >
+
+            </div>
+            <style>
+
+                #getter{
+
+                    width: 100%;
+                    height: 100% !important;
+                    background-color: black;
+                    opacity: 20%;
+                    position: fixed;;
+                    left: 0;
+                    top: 0;
+                    z-index: 50;}
+                .search{
+                    width: 100%;
+                    height: auto;
+                    padding-bottom: 1.5em !important;
+                    background-color: white;
+                    opacity: 100%;
+                    position: fixed;
+
+                    left: 0;
+                    top: -10000px;
+                    z-index: 100;
+                border-radius: 0px 0px 2em 2em;}
+
+                .history{
+                    width: 100%;
+                    height: auto;
+                    padding-bottom: 1.5em !important;
+                    background-color: white;
+                    opacity: 100%;
+                    position: fixed;
+
+                    left: 0;
+                    top: -10000px;
+                    z-index: 100;
+                    border-radius: 0px 0px 2em 2em;}
+            </style>
+            <script>
+                $issearchcalled = false;
+                $type = "";
+                $('#getter').fadeOut(0);
+               // $('.search').fadeOut(0);
+                $('#getter').click(()=>{
+                    if ($issearchcalled == true){
+                    $('.screen')[0].style.overflow = "auto";  $('.screen')[0].style.height = "auto";
+                    chooser('sortmenu_point', 0);chooser('sortmenudec_point', 0);if ($sortcalled == true) {callsort(); chooser('searchfilter', 0, true);} if ($filtercalled == true) {callfilter();chooser('searchfilter', 1, true);} chooser('searchcat_point', 0);
+                    $('#getter').fadeOut();
+                    anime({
+                        targets: '.search', translateY: -10000,  easing: 'easeInOutExpo', duration: 400
+                    })
+                        }else{
+                        $('.screen')[0].style.overflow = "auto";  $('.screen')[0].style.height = "auto";
+                        anime({
+                        targets: '.history', translateY: -10000,  easing: 'easeInOutExpo', duration: 400})
+
+                    }
+                    $('#getter').fadeOut();});
+                    function historycalled(){
+
+                        $issearchcalled = false;
+                        $('#getter').fadeIn(500);
+
+                        anime({
+                            targets: '.history', translateY: 10000,  easing: 'easeInOutExpo', duration: 400
+                        })
+
+                    }
+                   function searchcalled(){
+                       $issearchcalled = true;
+                       $('.screen')[0].style.overflow = "hidden"; $('.screen')[0].style.height = 100* hp + 'px';
+                       document.querySelector('.searchfiltermap').style.paddingLeft = screen.width/2 - (( document.querySelector('.f1').offsetWidth + 1) + (document.querySelector('.f2').offsetWidth + 1))/2  - (parseFloat(getComputedStyle(document.documentElement).fontSize)* 0.7)/2 + 'px';
+
+                       $type = "search";
+                anime({
+                     targets: '.search', translateY: 10000,  easing: 'easeInOutExpo', duration: 400
+                 })  ;
+                    $('#getter').fadeIn(500);
+                   // $('.search').fadeIn();
+                       document.body.style.overflow = "hidden";
+
+                       this.onmouseout = function () {
+
+                           document.body.style.overflow = "auto";
+
+                       };
+
+                   };
+            </script>
+            <div class = "history" style =" padding-top: 1em;">
+                <div class="row" style = "">
+                    <div class = "col s12" style = ""><p style = " padding-left:0.75rem;font-family: Bahnschrift; margin: 0; font-weight: 600; font-size: 1.5em;" >Історія</p>
+
+                    </div>
+                </div>
+                <div class="row" style = "margin-left: 1em; margin-right: 1em; background: rgba(232, 232, 232, 0.45); border-radius: 0.6em">
+
+                    <div class="input-field col s12" style="margin-bottom: 0;margin-top: 0.3em;">
+                        <div style = "margin-left: 0.5em; margin-right: 0.5em;">
+
+                            <i class="material-symbols-rounded prefix" style = "color: #585858; font-size: 1.7em">search</i>
+                            <input id="icon_prefix" type="text"   placeholder='Пошук' style = "font-family: Bahnschrift; font-size: 1.5em; color: black;">
+                            <style> input::placeholder { color: #585858;}</style>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class = "search" style="padding-top: 1em;">
+
+                <div class="row" style = "margin-left: 1em; margin-right: 1em; background: rgba(232, 232, 232, 0.45); border-radius: 0.6em">
+
+                    <div class="input-field col s12" style="margin-bottom: 0;margin-top: 0.3em;">
+                        <div style = "margin-left: 0.5em; margin-right: 0.5em;">
+
+                            <i class="material-symbols-rounded prefix" style = "color: #585858; font-size: 1.7em">search</i>
+                            <input id="icon_prefix" type="text"   placeholder='Пошук' style = "font-family: Bahnschrift; font-size: 1.5em; color: black;">
+<style> input::placeholder { color: #585858;}</style>
+                    </div>
+                    </div>
+
+            </div>
+                <div class="row" style = "margin-bottom: 0.5em;" >
+                    <ul class="searchcat" style = "padding-left: 1em; padding-top: 0; margin-top: 0; padding-bottom: 1em !important; ">
+                        <li class = "" style="" onclick="chooser('searchcat_point', 0); if ($sortcalled == true) {callsort(); chooser('searchfilter', 0, true);} if ($filtercalled == true) {callfilter();chooser('searchfilter', 1, true);}"><p class = "btn searchcat_point" style=" margin-top: 0; background: #CECECE; color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  ">Мальопис</p></li>
+                        <li class = "" style="" onclick="chooser('searchcat_point', 1); if ($sortcalled == true) {callsort(); chooser('searchfilter', 0, true);} if ($filtercalled == true) {callfilter();chooser('searchfilter', 1, true);}"><p class = "btn searchcat_point" style="  margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none; font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  ">Автор</p></li>
+                        <li class = "" style="" onclick="chooser('searchcat_point', 2); if ($sortcalled == true) {callsort(); chooser('searchfilter', 0, true);} if ($filtercalled == true) {callfilter();chooser('searchfilter', 1, true);}"><p class = "btn searchcat_point" style="  margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  ">Видавництво</p></li>
+                        <li class = "" style="" onclick="chooser('searchcat_point', 3); if ($sortcalled == true) {callsort(); chooser('searchfilter', 0, true);} if ($filtercalled == true) {callfilter();chooser('searchfilter', 1, true);}"><p class = "btn searchcat_point" style=" margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  ">Країна</p></li>
+
+
+
+                    </ul>
+                </div>
+
+                <div class = "searchresult">
+
+
+                    <ul class="searchcat serchres" onclick="if ($sortcalled == true) {chooser('searchfilter', 0, true); callsort(); $sortcalled = false;} " id = "ress" style = "padding-left: 1em; height: auto; padding-top: 0; margin-top: 0; "></ul>
+
+                </div>
+                    <script >
+                       document.getElementsByClassName('serchres')[0].style.maxHeight =  hp * 65 + 'px';
+
+                              </script>
+
+
+
+                <div class="row searchfiltermap" style = " margin-bottom:1em !important; margin-top: 0em; padding-top: 1em;" >
+                       <div onclick="chooser('searchfilter', 0, true); callsort();
+                   "  class = "btn searchfilter f1" style=" margin-right: 0.3em;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem; line-height: 1.3em "><i class="material-symbols-rounded" style = "color: #585858; font-size: 1.5rem;   margin-right: 0.3rem">sort</i>Сортувати за</div>
+                           <div onclick="chooser('searchfilter', 1, true); callfilter();
+                    document.getElementsByClassName('serchres')[0].scrollTop = 0" class = "btn searchfilter f2" style="  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  line-height: 1.3em"> <i class="material-symbols-rounded" style = "color: #585858; font-size: 1.5rem;   margin-right: 0.3rem">filter_list</i>Фільтр</div>
+                </div>
+            <div class ="row sortmenu" style="max-height: 0 !important;opacity: 0;margin-left: 1em;display: none; margin-bottom: 0em;" >
+
+                <div style = "padding-top: 1em;"><p class = "btn sortmenu_point" onclick="chooser('sortmenu_point', 0)" style=" margin-top: 0; background: #CECECE; color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem; margin-right: 0.3em; margin-bottom: 0.5em">Рейтингом</p>
+                <p class = "btn sortmenu_point" onclick="chooser('sortmenu_point', 1)" style=" margin-top: 0; background:  rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem; margin-right: 0.3em; margin-bottom: 0.5em">Назва (А-Я)</p>
+                    <p class = "btn sortmenu_point" onclick="chooser('sortmenu_point', 2)" style=" margin-top: 0; background:  rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem; margin-right: 0.3em; margin-bottom: 0.5em">Переглядами</p>
+                    <p class = "btn sortmenu_point" onclick="chooser('sortmenu_point', 3)" style=" margin-top: 0; background:  rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem; margin-right: 0.3em; margin-bottom: 0.5em">Час</p>
+                    <p class = "btn sortmenu_point" onclick="chooser('sortmenu_point', 4)" style=" margin-top: 0; background:  rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem; margin-right: 0.3em; margin-bottom: 0.5em">К-сть глав</p>
+
+                </div>
+                <div style = "margin-top: 0.5em;"><p class = "btn sortmenudec_point" onclick="chooser('sortmenudec_point', 0)" style=" margin-top: 0; background: #CECECE; color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem; margin-right: 0.3em; margin-bottom: 0.5em">Зростанням</p>
+                    <p class = "btn sortmenudec_point" onclick="chooser('sortmenudec_point', 1)" style=" margin-top: 0; background:  rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem; margin-right: 0.3em; margin-bottom: 0.5em">Спаданням</p>
+
+
+                </div>
+            </div>
+                <div class ="row filtermenu" style="max-height: 0 !important;opacity: 0;margin-bottom: 0em;display: none; overflow-y: scroll" >
+                    <div style = "margin-top: 0em;">
+                        <div class = "col s12" style = ""><p style = "font-family: Bahnschrift; margin: 0; font-weight: 600; font-size: 2em;" >Категорії</p></div>
+                        <ul class="catchooser" style = "padding-left: 1em; padding-top: 0; margin-top: 0;grid-template-columns: repeat(11, 8em); padding-bottom: 1em !important; ">
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 0,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.7rem; width: 100%; "><img src = "img/romantic_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;"> Романтика</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 1,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/boyovik_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;"> Бойовик</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 2,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/drama_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;"> Драма</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 3,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/comedy_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;"> Комедія</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 4,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/historic_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;"> Історія</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 5,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/fantastic_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;"> Фантастика</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 6,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/casual_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;"> Буденість</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 7,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/ukrchel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;"> Українське</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 8,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/fight_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;">Бойові мистецтва</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 9,true); "><div class = "btn catchooser_point"  style=" height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/horror_chel.svg" height = "70%" style = "padding-top: 0.8rem;"><p style = "font-size: 1rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;">Жахи</p></p></div></li>
+                            <li class = "" style="" onclick="chooser_light('catchooser_point', 10,true); "><div class = "btn catchooser_point"  style=" margin-right: 1rem; height: 9rem !important; margin-top: 0;  color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 0.8rem; width: 100%; "><img src = "img/detect_chel.svg" height = "70%" style = "padding-top: 1rem;"><p style = "font-size: 0.8rem; margin: 0; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-align: center; line-height: 1 !important;">Детектив</p></p></div></li>
+                        </ul>
+            </div>
+                    <div style = "margin-top: 0em;">
+                        <div class = "" style = ""><p style = " padding-left:0.75rem;font-family: Bahnschrift; margin: 0; font-weight: 600; font-size: 2em;" >Теги</p></div>
+                    </div>
+
+                        <div class="row" style = "margin-left: 1em; margin-top: 0.3em; margin-right: 1em; background: rgba(232, 232, 232, 0.45);  border-radius: 0.6em">
+
+                            <div class="input-field col s12" style="margin-bottom: 0;margin-top: 0.3em; padding-left: 0em; ">
+                                <div style = " margin-top: 0.3em !important; margin-bottom: 0.3em !important; " class = "chips-autocomplete">
+
+
+                                    <input id = "chipi" type="text"   style = "font-family: Bahnschrift; width: 10em !important; font-size: 1.5em; color: black;  padding-left: 0.5em !important;">
+
+                                </div>
+                            </div>
+                        </div>
+                    <div style = "margin-top: 0em;">
+
+                        <div class="row" style = "margin-bottom: 0.5em">
+                            <div class = "col s4" style = ""><p style = " padding-left:0.75rem;font-family: Bahnschrift; margin: 0; font-weight: 600; font-size: 2em;" >Глав</p>
+
+                            </div>
+                            <div class="input-field col s4 posts" style="margin-bottom: 0;margin-top: 0em; padding-left: 0em; ">
+                                <div style = "margin-bottom: 0.3em !important;  border-radius: 0.6em; background: rgba(232, 232, 232, 0.45); " >
+
+
+                                    <input  type="text"  onkeyup="this.value = this.value.replace(/[^\d]/g,'');" placeholder="Від" style = "font-family: Bahnschrift;  font-size: 1.5em; color: black;  padding-left: 0.5em !important;">
+
+                                </div>
+                            </div>
+                            <div class="input-field col s4 posts" style="margin-bottom: 0;padding-left: 0em; margin-top: 0em !important;">
+                                <div style = "  margin-bottom: 0.3em !important; border-radius: 0.6em; background: rgba(232, 232, 232, 0.45); " >
+
+
+                                    <input  type="text"   onkeyup="this.value = this.value.replace(/[^\d]/g,'');" placeholder="До" style = "font-family: Bahnschrift;  font-size: 1.5em; color: black;  padding-left: 0.5em !important;">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style = "">
+                        <div class = "col s12" style = ""><p style = " padding-left:0.75rem;font-family: Bahnschrift; margin: 0; font-weight: 600; font-size: 2em;" >Тип мальописа</p>
+
+                        </div>
+
+                        <ul class="typechooser" style = "padding-left: 1em; padding-top: 4em !important; ">
+                            <li class = "" style="" onclick="chooser('typechoose_point', 0,true); "><p class = "btn typechoose_point" style=" margin-top: 0; background: rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  ">Унга</p></li>
+                            <li class = "" style="" onclick="chooser('typechoose_point', 1,true); "><p class = "btn typechoose_point" style=" margin-top: 0; background: rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  ">Західні комікси</p></li>
+                            <li class = "" style="" onclick="chooser('typechoose_point', 2,true); "><p class = "btn typechoose_point" style=" margin-top: 0; background: rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  ">Манга</p></li>
+                            <li class = "" style="" onclick="chooser('typechoose_point', 3,true); "><p class = "btn typechoose_point" style="margin-right: 0.5em; margin-top: 0; background: rgba(232, 232, 232, 0.45); color: #1D1E1C; font-family: Bahnschrift; box-shadow: none;  font-weight: bold; margin-bottom: 0;font-size: 1.5rem;  ">Манхва</p></li>
+
+
+
+
+                        </ul>
+                    </div>
+                    </div>
+
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var elems = document.querySelectorAll('.chips-autocomplete');
+                    var instances = M.Chips.init(elems, {
+                        autocompleteOptions: {
+                            data: {
+                                'Українське': null,
+                                'Магія': null,
+                                'Антиутопія': null
+                            },
+
+                            limit: 30,
+                            minLength: 0
+                        }, placeholder: 'Додайте тегів'
+                    });
+                });
+                document.querySelector('#chipi').addEventListener('textInput', function(e){
+                    var keyCode = e.data.charCodeAt(0);
+                    if (keyCode == 32){
+                        e.preventDefault();
+                        e.currentTarget.dispatchEvent(new KeyboardEvent('keydown',{'keyCode':13}));
+                    }
+                });
+
+                $sortcalled = false;
+                $filtercalled = false;
+                function callfilter(){
+
+                    if ($sortcalled == true){
+                        anime({
+                            targets:  document.getElementsByClassName('sortmenu')[0], maxHeight: 0* hp, easing: 'easeInOutExpo', duration: 100
+                        });
+                    anime({
+                        targets:  document.getElementsByClassName('sortmenu')[0], opacity: `0%`, easing: 'easeInOutExpo', duration: 100
+                    });
+                    setTimeout(
+                        () => {
+
+                            document.getElementsByClassName('sortmenu')[0].style.display = "none";
+                        },
+                        200
+                    );
+                    $sortcalled = false;}
+                    if ($filtercalled == false){
+                    document.getElementsByClassName('filtermenu')[0].style.display = "block";
+                        document.querySelector('.typechooser').style.gridTemplateColumns = document.getElementsByClassName("typechoose_point")[0].offsetWidth + 1 + 'px ' + (document.getElementsByClassName("typechoose_point")[1].offsetWidth + 1) +  'px ' + (document.getElementsByClassName("typechoose_point")[2].offsetWidth + 1) + 'px ' + (document.getElementsByClassName("typechoose_point")[3].offsetWidth + 1) + 'px';
+
+                        $filtercalled = true;
+                    anime({
+                        targets:  document.getElementsByClassName('filtermenu')[0], maxHeight: 65* hp, easing: 'easeInOutExpo', duration: 150
+                    });
+                    anime({
+                        targets:  document.getElementsByClassName('filtermenu')[0], opacity: `100%`, easing: 'easeInOutExpo', duration: 150
+                    });
+                        anime({
+                            targets:  document.getElementsByClassName('searchfiltermap')[0], paddingTop: `0em`, easing: 'easeInOutExpo', duration: 150
+                        });
+                    anime({
+                        targets:  document.getElementsByClassName('serchres')[0], maxHeight: 0 * hp, easing: 'easeInOutExpo', duration: 150
+                    });
+                        anime({
+                            targets:  document.getElementsByClassName('serchres')[0], scrollTop : 0, easing: 'easeInOutExpo', duration: 100
+                        });
+
+                    }
+                    else if ($filtercalled == true){
+                        anime({
+                            targets:  document.getElementsByClassName('filtermenu')[0], maxHeight: 0* hp, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('serchres')[0], maxHeight: 65 * hp, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('filtermenu')[0], opacity: `0%`, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('searchfiltermap')[0], paddingTop: `1em`, easing: 'easeInOutExpo', duration: 150
+                        });
+                        setTimeout(
+                            () => {
+
+                                document.getElementsByClassName('filtermenu')[0].style.display = "none";
+                            },
+                            200
+                        );
+                        $filtercalled = false;
+                    }
+                }
+
+                function callsort(){
+                    if ($filtercalled == true){
+                        anime({
+                            targets:  document.getElementsByClassName('filtermenu')[0], maxHeight: 0* hp, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('filtermenu')[0], opacity: `0%`, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('searchfiltermap')[0], paddingTop: `1em`, easing: 'easeInOutExpo', duration: 150
+                        });
+                        setTimeout(
+                            () => {
+
+                                document.getElementsByClassName('filtermenu')[0].style.display = "none";
+                            },
+                            200
+                        );
+                        $filtercalled = false;}
+                    if ($sortcalled == false){
+                        document.getElementsByClassName('sortmenu')[0].style.display = "block";
+                             $sortcalled = true;
+
+                        anime({
+                            targets:  document.getElementsByClassName('sortmenu')[0], maxHeight: 25* hp, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('sortmenu')[0], opacity: `100%`, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('serchres')[0], maxHeight: 40 * hp, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('serchres')[0], scrollTop : 0, easing: 'easeInOutExpo', duration: 100
+                        });
+
+
+                    }else if ($sortcalled == true){
+                        $sortcalled = false;
+
+                        anime({
+                            targets:  document.getElementsByClassName('sortmenu')[0], maxHeight: 0* hp, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('serchres')[0], maxHeight: 65 * hp, easing: 'easeInOutExpo', duration: 150
+                        });
+
+                        anime({
+                            targets:  document.getElementsByClassName('sortmenu')[0], opacity: `0%`, easing: 'easeInOutExpo', duration: 150
+                        });
+                        anime({
+                            targets:  document.getElementsByClassName('sortmenu')[0], opacity: `0%`, easing: 'easeInOutExpo', duration: 150
+                        });
+                        setTimeout(
+                            () => {
+
+                                document.getElementsByClassName('sortmenu')[0].style.display = "none";
+                            },
+                            200
+                        );
+                    }
+                }
+            </script>
+            <div class = "screen" style="overflow: auto">
+            <div class = "header" >
+            <div class="row"  style = "padding-top: 1.5em; margin-left: 1em; margin-right: 1em; margin-bottom:1em" >
+                <div class = "col s2" style = "text-align: center" id = "search" onclick="searchcalled()" style="margin-left: 0em"><i class="material-symbols-rounded" style = "text-align: center; font-size: 2.5em; ">search</i></div>
+            <div class = "col s4 offset-s2" style = "text-align: center"><img style="margin-top: 0em" width = "100%" class = "center-align" src = "img/logo.svg" ></></div>
+        <div class = "col s2 offset-s2" onclick="historycalled()" style="text-align: center"><i  class="material-symbols-rounded" style = "font-size: 2.5em; ">history</i></div>
+        </div>
+</div>
+        <div class="navbar" style = "box-shadow: 0em -1em 5em 0em #00000005">
+
+            <!--<a href="#home" ><img ></a>
+            <a href="#news">News</a>
+            <a href="#contact">Contact</a>-->
+            <div class = "row" style="margin-bottom: 0.75em !important; margin-left: 1em;">
+                <div class = "col s3" style = "width: 20% !important;"> <a href="#home" ><img class = "" width = "60%" height = "60%" style = "margin-top: 1em" class = "center-align" src = "img/homec.svg"></></a></div>
+                <div class = "col s3" style = "width: 20% !important;"> <a href="#home" ><img class = ""  width = "60%" height = "60%" style = "margin-top: 1em; align:center" class = "center-align" src = "img/lates.svg"></></a></div>
+                <div class = "col s3" style = "width:20% !important;"> <a href="#home" ><img class = "" width = "60%" height = "60%" style = "margin-top: 1em; align:center" class = "center-align" src = "img/message.svg"></></a></div>
+                <div class = "col s3" style = "width:20% !important;"> <a href="#home" ><img class = "" width = "60%" height = "60%" style = "margin-top: 1em; align:center" class = "center-align" src = "img/activity.svg"></></a></div>
+                <div class = "col s3" style = "width:20% !important;"> <a href="#home" ><img class = "" width = "60%" height = "60%" style = "margin-top: 0.8em; align:center; border-radius: 100%;" class = "center-align" src = "img/ava.png"></></a></div>
+            </div>
+        </div>
+
+        <div class = "boder" style = "padding-top: 5.5em;">
+        <div class="row"  style = "padding-top: 0.5em; margin-left: 1em; margin-right: 1em;margin-bottom: 0.2em" >
+            <div class = "col s3" style = "padding-right: 0.5em; width: 20%"><img class = "tcel" width = "100%" class = "center-align" src = "img/welcom_chel.svg"></></div>
+        <div class = "col s9 lab" width = "100%"> <p style = "font-family: Bahnschrift; margin: 0; font-weight: bold; font-size: 90%;" >Унга, Kislotniy!</p></div>
+        </div>
+        <div class="row"  style = "padding-top: 0.2em; margin-left: 1em; margin-right: 1em; margin-bottom: 0.5em" >
+            <div class = "col s12 lbf" style = ""><p style = "font-family: Bahnschrift; margin: 0; font-weight: bold; font-size: 90%;" >Вам сподобається</p></></div></div>
+
+        <div class = "col s12" id = "recomend">
+            <!--<ul class="gallery" style = "grid-template-columns: repeat(5, 15em);padding-top: 0; margin-top: 0; padding-left: 2em;">
+                <li style=""><div width = "100%"  ><img src = "img/Image%201.png" style="  border-radius: 3%;" width = 100% "></img>  <p style="font-family: Bahnschrift; margin-top: 3%; font-weight: bold; margin-bottom: 0;font-size: 2rem;">Орда</p>   <p style="font-family: Bahnschrift; margin-top: 0%;  font-size: 1rem;">Ігор Баранко</p>ґґ</div></li>
+
+                <li style="background: #f7ede2;"></li>
+                <li style="background: #f5cac3;"></li>
+                <li style="background: #84a59d;"></li>
+                <li style="background: #f28482;"></li>
+            </ul>-->
+            <script>
+                const searchres = document.getElementById('ress');
+                $data_s = '[{"back": "img/Image%203.png", "title": "Захисник вогню", "author": "Iмам Тадайом", "id": "3", "publisher": "UA Comix", "publish_year": "2021" }, {"back": "img/Image%204.png", "title": "Характерник", "author": "Олексій чорний", "id": "4", "publisher": "UA Comix", "publish_year": "2020" }, {"back": "img/Image%205.png", "title": "Залізна голова", "author": "Максим Удинський", "id": "5", "publisher": "Vovkulaka", "publish_year": "2022"}, {"back": "img/Image%206.png", "title": "Пітмен", "author": "Єгор Ключник", "id": "6", "publisher": "Vovkulaka", "publish_year": "2021"}]';
+                const obj_s = JSON.parse($data_s);
+                for ($i = 0; $i < obj_s.length; $i++)
+                searchres.innerHTML += '<li class = "" style = ""><div class = "row" style = "margin-bottom: 1em !important;"><div class = "col" style = "width: 25% !important; padding: 0;"><img style = "border-radius: 5%; width: 100%" src = "' + obj_s[$i].back + '"></div><div class = "col" style = "width: 75% !important;"><p style = "margin: 0; font-size: 2.5rem; font-weight: 600; font-family: Bahnschrift; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">' + obj_s[$i].title + '</p><p style = "margin: 0; font-size: 1.3rem; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; font-family: Bahnschrift; overflow: hidden">' + obj_s[$i].author + '</p><p style = "margin: 0; font-size: 1.5rem; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; overflow: hidden"0>' + obj_s[$i].publisher + ', ' + obj_s[$i].publish_year + '</P></div></li>';
+                //searchres.innerhtml +=  '<li class = "" style=""> <div class ="row" style = "margin-bottom: 1em !important;" > <div class="col" style="width: 25% !important; padding:0; "> <img style = "border-radius: 5%;width: 100%;" src = "img/Image%203.png"></div> <div class="col" style = "width: 75% !important;"> <p style="margin: 0; font-size:2.5rem;font-weight: 600; text-overflow: ellipsis;white-space: nowrap; overflow: hidden;">Захисник вогню</p> <p style="margin: 0; font-size:1.3rem;font-weight: 400; text-overflow: ellipsis;white-space: nowrap; overflow: hidden;">Іман Тадайом</p> <p style="margin: 0; font-size:1.5rem;font-weight: 400; text-overflow: ellipsis;white-space: nowrap; overflow: hidden;">UA Comix, 2021</p> </div> </div> </li>';
+
+                $data = '{"recomend": [{"back": "img/Image%201.png", "title": "Орда", "author": "Ігор Баранько", "id": "1"},{"back": "img/Image%202.png", "title": "Пітмен", "author": "Єгор Ключник", "id":"2"}, {"back": "img/Image%203.png", "title": "Захисник вогню", "author": "Iмам Тадайом", "id": "3", "publisher": "UA Comix", "publish_year": "2021" }, {"back": "img/Image%204.png", "title": "Характерник", "author": "Олексій чорний", "id": "4", "publisher": "UA Comix", "publish_year": "2020" }], "categories": [{"title": "У нас новинки", "icon": "tcel_1", "content": [{"back": "img/Image%201.png", "title": "Орда", "author": "Ігор Баранько", "id": "1"},{"back": "img/Image%202.png", "title": "Пітмен", "author": "Єгор Ключник", "id": "2"}, {"back": "img/Image%203.png", "title": "Захисник вогню", "author": "Iмам Тадайом", "id": "3", "publisher": "UA Comix", "publish_year": "2021" }, {"back": "img/Image%204.png", "title": "Характерник", "author": "Олексій чорний", "id": "4", "publisher": "UA Comix", "publish_year": "2020" }]}]}';
+                const obj = JSON.parse($data);
+
+                const rechtml = document.getElementById('recomend');
+                rechtml. innerHTML+= '<ul class="gallery" id = "recomend_block" style = "grid-template-columns: repeat(' + obj.recomend.length +', 10em);padding-top: 0; margin-top: 0; padding-left: 2em;">';
+                const rechtml_block = document.getElementById('recomend_block');
+                for ($i = 0; $i< obj.recomend.length; $i++){
+                    rechtml_block.innerHTML+= ' <li style=""><div width = "100%" onclick =  "gototitle('+ obj.recomend[$i].id + ')"><img src = "' + obj.recomend[$i].back+ '" style="  border-radius: 3%;" width = 100% "></img>  <p style="font-family: Bahnschrift;  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 3%; font-weight: bold; margin-bottom: 0;font-size: 2rem;">' + obj.recomend[$i].title + '</p>   <p style="font-family: Bahnschrift; margin: 0%;  font-size: 1rem;">' + obj.recomend[$i].author +'</p></div></li>';
+
+                }
+                for ($i = 0; $i < obj.categories.length; $i++){
+                    rechtml. innerHTML += '<div class="row"  style = "padding-top: 0.2em; margin-left: 1em; margin-right: 1em; margin-bottom: 0.5em" ><div class = "col s3" style = "padding-right: 0.5em; width: 25%"><img class = "tcel" width = "100%" class = "center-align" src = "img/' + obj.categories[$i].icon + '.svg"></></div> <div class = "col s9 lab" width = "100%"> <p style = "font-family: Bahnschrift; margin: 0; font-weight: bold; font-size: 90%;" >' + obj.categories[$i].title + '</p></div> </div>';
+                    rechtml. innerHTML+= '<ul class="gallery" id = "recomend_block_' + $i + '" style = "grid-template-columns: repeat(' + obj.recomend.length +', 10em);padding-top: 0; margin-top: 0; padding-left: 2em;">';
+
+                    for ($j = 0; $j < $j < obj.categories[$i].content.length; $j++){
+                        document.getElementById('recomend_block_' + $i).innerHTML+= ' <li style=""><div width = "100%" onclick = "gototitle('+ obj.recomend[$i].id + ')"><img src = "' + obj.categories[$i].content[$j].back+ '" style="  border-radius: 3%;" width = 100% "></img>  <p style="font-family: Bahnschrift; margin-top: 3%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bold; margin-bottom: 0;font-size: 2rem;">' + obj.categories[$i].content[$j].title + '</p>   <p style="font-family: Bahnschrift; margin: 0%;  font-size: 1rem;">' + obj.categories[$i].content[$j].author +'</p></div></li>';
+
+                    }
+                }
+
+                function gototitle($i) {
+                    window.location = "titlepage/index.html#" + $i;
+                }
+                // rechtml.innerHTML+= '</ul>'
+            </script>
+        </div>
+<div style = "margin-top: 2.7em;">f
+</div>      </div>
+        <script>
+
+            $(function(){
+
+                var box = $('.tcel');
+                var boxWith = box.height() / 3;
+                var boxHeight = box.height() / 4;
+
+                $('.lab p').css('font-size',boxWith);
+                $('.lab p').css('padding-top',boxHeight);
+                $('.lbf p').css('font-size',boxWith);
+
+            });
+        </script>
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="js/materialize.js"></script>
+        <style>
+            .navbar {
+                background-color: #FFFFFF;
+                overflow: hidden;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+            .header {
+                background-color: #FFFFFF;
+
+                position: fixed;
+
+                width: 100%;
+            }
+            .gallery {
+                padding: 1rem;
+                display: grid;
+                padding-bottom: 0 !important;
+                margin-bottom: 0 ;
+                grid-template-rows: 1fr;
+                grid-column-gap: 1rem;
+                grid-row-gap: 1rem;
+                overflow: scroll;
+                height: 21em;
+                scroll-snap-type: both mandatory;
+                scroll-padding: 1rem;
+            }
+            .searchcat {
+                padding: 1rem;
+                display: grid;
+                padding-bottom: 0 !important;
+                margin-bottom: 0 ;
+                grid-template-rows: 1fr;
+                grid-column-gap: 0.7rem;
+                grid-row-gap: 1rem;
+                overflow: scroll;
+                height: 4rem;
+                scroll-snap-type: both mandatory;
+                scroll-padding: 1rem;
+                transition: background-color 1s;
+            }
+            .catchooser {
+                display: grid;
+                padding-bottom: 0 !important;
+                margin-bottom: 0 ;
+                grid-template-rows: 1fr;
+                grid-column-gap: 0.7rem;
+                grid-row-gap: 1rem;
+                overflow-y: hidden;
+                overflow-x: scroll;
+                height: 10.5rem;
+                scroll-snap-type: both mandatory;
+                scroll-padding: 1rem;
+                transition: background-color 1s;
+            }
+            .typechooser {
+                display: grid;
+                padding-bottom: 0 !important;
+                margin-bottom: 0 ;
+                grid-template-rows: 1fr;
+                grid-column-gap: 0.7rem;
+                grid-row-gap: 1rem;
+                overflow-y: hidden;
+                overflow-x: scroll;
+                height: 4rem;
+                scroll-snap-type: both mandatory;
+                scroll-padding: 1rem;
+                transition: background-color 1s;
+            }
+            .active {
+                scroll-snap-type: unset;
+            }
+
+            li {
+                scroll-snap-align: center;
+                display: inline-block;
+                border-radius: 0px;
+font-size: 0;
+            }
+            a{
+                color: black !important;
+            }
+            .autocomplete-items {
+
+                border-bottom: none;
+                border-top: none;
+                z-index: 990;
+                /*position the autocomplete items to be the same width as the container:*/
+                overflow-block: scroll;
+                left: 0;
+                right: 0;
+            }
+
+        </style>
+        <script>const slider = document.querySelector('.gallery');
+        addfunct(document.querySelector('.gallery'));
+        addfunct(document.querySelector('.searchcat'));
+        addfunct(document.querySelector('.catchooser'));
+        addfunct(document.querySelector('.typechooser'));
+        document.querySelector('.searchcat').style.gridTemplateColumns = document.getElementsByClassName("searchcat_point")[0].offsetWidth + 1 + 'px ' + (document.getElementsByClassName("searchcat_point")[1].offsetWidth + 1) +  'px ' + (document.getElementsByClassName("searchcat_point")[2].offsetWidth + 1) + 'px ' + (document.getElementsByClassName("searchcat_point")[3].offsetWidth + 1) + 'px';
+
+        document.querySelector('.searchfiltermap').style.top = document.querySelector('.search').offsetHeight - document.querySelector('.searchfiltermap').offsetHeight - parseFloat(getComputedStyle(document.documentElement).fontSize)* 2 + 'px';
+
+
+        function addfunct($slider){
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            $slider.addEventListener('mousedown', e => {
+            isDown = true;
+            $slider.classList.add('active');
+            startX = e.pageX - $slider.offsetLeft;
+            scrollLeft = $slider.scrollLeft;
+        });
+        $slider.addEventListener('mouseleave', _ => {
+            isDown = false;
+            $slider.classList.remove('active');
+        });
+        $slider.addEventListener('mouseup', _ => {
+            isDown = false;
+            $slider.classList.remove('active');
+        });
+        $slider.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - $slider.offsetLeft;
+            const SCROLL_SPEED = 3;
+            const walk = (x - startX) * SCROLL_SPEED;
+            $slider.scrollLeft = scrollLeft - walk;
+        });}
+
+            function chooser($obj, $i, $decline) {
+                if ($decline == true) {
+                    objects = document.getElementsByClassName($obj);
+                    if (objects[$i].style.background != "rgb(206, 206, 206)") {
+
+                        Object.values(objects).forEach(defaultstyle);
+
+                        anime({
+                            targets: objects[$i], background: '#CECECE', easing: 'easeInOutExpo', duration: 150
+                        });
+                    } else {
+                        Object.values(objects).forEach(defaultstyle);
+                    }
+                }else{objects = document.getElementsByClassName($obj);
+                Object.values(objects).forEach(defaultstyle);
+                anime({
+                    targets : objects[$i], background: '#CECECE', easing: 'easeInOutExpo', duration:150
+                });}
+
+            }
+        function chooser_light($obj, $i) {
+
+            objects = document.getElementsByClassName($obj);
+            if (objects[$i].style.background != "rgb(206, 206, 206)") {
+
+
+
+                anime({
+                    targets: objects[$i], background: '#CECECE', easing: 'easeInOutExpo', duration: 150
+                });
+            } else{
+                anime({
+                targets: objects[$i], background: 'rgba(232, 232, 232, 0.45)', easing: 'easeInOutExpo', duration: 150 });
+            }
+        }
+
+        function defaultstyle(item){
+            item.style.background = "rgba(232, 232, 232, 0.45)";
+        }
+        </script>
+        </div>
+        <script src="cordova.js"></script>
+        <script src="js/index.js"></script>
+
+
+    <script src="amagiloader.js"></script>
+    <script>
+
+
+    </script>
+    </body>
+</html>
